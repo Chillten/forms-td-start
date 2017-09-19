@@ -1,45 +1,32 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  @ViewChild('f') form: NgForm;
-  answer: string;
+export class AppComponent implements OnInit {
+
   genders = ['male', 'female'];
 
-  user = {
-    name: '',
-    email: '',
-    secret: '',
-    answer: '',
-    gender: ''
-  };
+  signupForm: FormGroup;
 
-  suggestUserName() {
-    const suggestedName = 'Superuser';
-    this.form.form.patchValue({
-      userData: {
-        username: suggestedName
-      }
-    })
+  ngOnInit(): void {
+    this.signupForm = new FormGroup({
+      username: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.email, Validators.required]),
+      gender: new FormControl('male'),
+      hobbies: new FormArray([])
+    });
   }
 
-  // onSubmit(form: NgForm) {
-  //   console.log(form);
-  // }
-
   onSubmit() {
-    console.log(this.form);
-    this.user.name = this.form.value.userData.username;
-    this.user.email = this.form.value.userData.email;
-    this.user.secret = this.form.value.secret;
-    this.user.answer = this.form.value.questionAnswer;
-    this.user.gender = this.form.value.gender;
+    console.log(this.signupForm);
+  }
 
-    this.form.reset();
+  addHobby() {
+    const control = new FormControl(null, Validators.required);
+    (<FormArray>this.signupForm.get('hobbies')).push(control);
   }
 }
