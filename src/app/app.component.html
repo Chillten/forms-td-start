@@ -6,6 +6,7 @@
           <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" formControlName="username" class="form-control">
+            <span *ngIf="signupForm.get('username').errors?.NameIsForbidden">This name is forbidden</span>
             <span *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched">Please enter a valid username!</span>
           </div>
           <div class="form-group">
